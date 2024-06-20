@@ -1,12 +1,37 @@
-# .github/workflows/ci.yml dosyasının çözülen hali
-steps:
-  - name: Checkout code
-    uses: actions/checkout@v2
-  - name: Set up Node.js
-    uses: actions/setup-node@v2
-    with:
-      node-version: '14'
-  - name: Install dependencies
-    run: npm ci  # Daha iyi bir yöntem olan npm ci kullanıldı
-  - name: Run tests
-    run: npm test
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run tests
+      run: npm test
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-test
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Deploy to Server (hypothetical step)
+      run: echo "Deploying application..."
+      # Buraya gerçek deploy komutları eklenebilir
